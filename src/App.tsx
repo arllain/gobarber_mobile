@@ -1,6 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StatusBar } from 'react-native';
 
-const App: React.FC = () => <View />;
+const App: React.FC = () => (
+  <>
+    <StatusBar barStyle="light-content" backgroundColor="#312338" />
+    <View style={{ flex: 1, backgroundColor: '#312338' }} />
+  </>
+);
 
 export default App;
