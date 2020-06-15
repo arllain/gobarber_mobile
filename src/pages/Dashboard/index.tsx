@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import Icon from 'react-native-vector-icons/Feather';
 import { Button } from 'react-native';
 import { useAuth } from '../../hooks/auth';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +12,13 @@ import {
   ProfileButton,
   UserAvatar,
   ProvidersList,
+  ProvidersListTitle,
+  ProviderContainer,
+  ProviderAvatar,
+  ProviderInfo,
+  ProviderName,
+  ProviderMeta,
+  ProviderMetaText,
 } from './styles';
 
 export interface Provider {
@@ -35,6 +43,13 @@ const Dashboard: React.FC = () => {
     navigate('Profile');
   }, [navigate]);
 
+  const navigateToCreiateAppointment = useCallback(
+    (providerId: string) => {
+      navigate('CreateAppointment', { providerId });
+    },
+    [navigate],
+  );
+
   return (
     <Container>
       <Header>
@@ -51,7 +66,30 @@ const Dashboard: React.FC = () => {
       <ProvidersList
         data={providers}
         keyExtractor={(provider) => provider.id}
-        renderItem={({ item }) => <UserName>{item.name}</UserName>}
+        ListHeaderComponent={
+          <ProvidersListTitle>Cabelereiros</ProvidersListTitle>
+        }
+        renderItem={({ item: provider }) => (
+          <ProviderContainer
+            onPress={() => navigateToCreiateAppointment(provider.id)}
+          >
+            <ProviderAvatar source={{ uri: provider.avatar_url }} />
+
+            <ProviderInfo>
+              <ProviderName>{provider.name}</ProviderName>
+
+              <ProviderMeta>
+                <Icon name="calendar" size={14} color="#ff9000"></Icon>
+                <ProviderMetaText>Segunda à sexta</ProviderMetaText>
+              </ProviderMeta>
+
+              <ProviderMeta>
+                <Icon name="clock" size={14} color="#ff9000"></Icon>
+                <ProviderMetaText>8h às 18h</ProviderMetaText>
+              </ProviderMeta>
+            </ProviderInfo>
+          </ProviderContainer>
+        )}
       />
 
       {/* <Button title="Sair" onPress={signOut} color="#312e38" /> */}
